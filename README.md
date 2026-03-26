@@ -25,6 +25,11 @@
 - bootstrap patterns displayed well in templates
 - templatetags setup
 
+## basedj
+- shows lots of settings.py configs
+- phat base.html
+- includes vendored packages
+
 ## django-cve-2025-64459
 - Text Enum (only models!)
 
