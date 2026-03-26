@@ -1,0 +1,33 @@
+{% extends '_base.html' %}
+{% load markdown_extras %}
+{% block title %}
+  {{ snippet.title }} | {{ block.super }}
+{% endblock title %}
+{% block content %}
+<div class="d-flex align-items-baseline justify-content-between">
+  <h1 class="inline-block">{{ snippet.title }}</h1>
+  {% if snippet.author == user %}
+  <div>
+    <span class="text-muted fs-5">You created this post {{ snippet.created_at|timesince}} ago</span>
+  </div>
+  <div>
+      <a href="{% url 'snippet_edit' snippet.pk %}"
+         class="btn btn-outline-success inline-block me-3">Edit</a>
+      <a href="{% url 'snippet_delete' snippet.pk %}"
+         class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover inline-block">Delete</a>
+</div>
+  {% endif %}
+</div>
+  {% comment %} <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6> {% endcomment %}
+  <p class="">
+    {% for tag in snippet.tags.all %}<span class="badge text-bg-primary">{{ tag.name }}</span>{% endfor %}
+  </p>
+  <p class="">{{ snippet.author.username }}
+    {% if snippet.author == user %}
+        ⭐️ 
+        <span> - Last Edit: {{ snippet.updated_at|timesince }} ago</span>
+    {% endif %}
+  </p>
+  <div class="fs-6 fs-lg-5">{{ snippet.body|markdownify }}</div>
+</div>
+{% endblock content %}

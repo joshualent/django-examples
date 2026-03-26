@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    {% comment %} <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script> {% endcomment %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <title>{% block title %}Croak{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static "images/favicon.ico" %}" type="image/x-icon">
+  </head>
+  <body>
+    <nav class="navbar sticky-top navbar-expand-lg bg-dark border-bottom border-body mb-4 py-1" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">Croak</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        {% with request.resolver_match.url_name as url_name %}
+          <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+              <li class="nav-item">
+                <a class="nav-link {% if url_name == 'home' %} active" aria-current="page {% endif %}" href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if url_name == 'croak_new' %} active" aria-current="page {% endif %}" href="{% url 'croak_new' %}">+ New Croak</a>
+              </li>
+            </ul>
+            {% comment %} show dropdown of options if user is authenticated, else show login and signup buttons {% endcomment %}
+            {% if user.is_authenticated %}
+              <div class="mr-auto">
+                <ul class="navbar-nav">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                      Settings
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#">{{ user.email }}</a></li>
+                      <li>
+                        <hr class="dropdown-divider">
+                      </li>
+                      <li><a class="dropdown-item" href="{% url 'profile_detail' request.user.pk %}">Profile</a></li>
+                      <li>
+                        <form class="d-inline" action="{% url 'logout' %}" method="post">
+                          {% csrf_token %}
+                          <button type="submit" class="link dropdown-item">Log Out</button>
+                        </form>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+            {% else %}
+              <div class="d-flex gap-2">
+                <a href="{% url 'login' %}" class="btn btn-outline-light">Log In</a>
+                <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up</a>
+            {% endif %}
+          </div>
+        {% endwith %}
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    {% block content %}
+      <code>content</code> goes here
+    {% endblock %}
+  </div>
+  <style>
+    .asteriskField {
+      color: #ee0000dd;
+      margin-left: 0.075em;
+      font-size: 1.1em;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="{% static 'js/base.js' %}"></script>
+</body>

@@ -1,0 +1,16 @@
+<p class="d-inline">
+  {% with user_likes=croak.likes.all %}
+    <button
+      data-id="{{ croak.id }}"
+      data-action="{% if user in user_likes %}un{% endif %}like"
+      data-like-url="{{ croak.get_like_url }}"
+      class="btn btn-{% if not user in user_likes %}outline-{% endif %}primary like-button"
+      {% if not user.is_authenticated %}disabled{% endif %}
+    >
+      <i class="like-icon bi bi-hand-thumbs-up{% if user in user_likes %}-fill{% endif %}">
+        <span class="like-count">{{ user_likes|length }}</span>
+        Likes
+      </i>
+    </button>
+  {% endwith %}
+</p>

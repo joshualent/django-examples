@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Delete Review for {{ review.restaurant }}
+{% endblock %}
+
+{% block content %}
+  <h1>Delete Review for {{ review.restaurant }}?</h1>
+  <p>{{ review.user.username }} - <span class="fw-bold">⭐{{ review.rating }}-Star Review</span></p>
+  <p class="fs-5"> {{ review.body }}</p>
+  <form action="" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+  </form>
+{% endblock %}

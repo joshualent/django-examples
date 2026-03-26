@@ -1,0 +1,18 @@
+{% comment %} like button partial {% endcomment %}
+<form class="d-inline" id="croak-like-{{ croak.id }}-form"
+      hx-post="{% url 'croak_like_htmx' croak.pk %}" hx-swap="outerHTML">
+  {% csrf_token %}
+  <button
+    {% if not user.is_authenticated %}
+      disabled
+    {% endif %}
+    aria-label="{% if not user in croak.likes.all %}un{% endif %}like croak"
+    type="submit"
+    class="btn btn
+           {% if user in croak.likes.all %}btn-primary
+           {% else %}btn-outline-primary{% endif %}"
+  >
+    <i class="bi bi-hand-thumbs-up{% if user in croak.likes.all %}-fill{% endif %}"></i>
+    {{ croak.likes.count }} Likes
+  </button>
+</form>

@@ -1,0 +1,12 @@
+<form hx-post="{% url 'comment_like' comment.pk %}" hx-swap="outerHTML">
+    {% csrf_token %}
+    <button style="--bs-btn-padding-y: .25rem;
+                   --bs-btn-padding-x: .5rem;
+                   --bs-btn-font-size: .75rem"
+            {% if not user.is_authenticated %}disabled{% endif %}
+            type="submit"
+            class="btn mt-1 {% if user in post.likes.all %} btn-primary {% else %} btn-outline-primary{% endif %} ">
+        <i class="bi bi-hand-thumbs-up{% if user in post.likes.all %}-fill{% endif %}"></i>
+        {{ comment.likes.count }} Likes
+    </button>
+</form>

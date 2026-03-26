@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load helper_tags %}
+
+{% block title %}Profile | {{ block.super }}{% endblock title %}
+
+{% block content %}
+{% comment %} use object becuase `user` references the request's user variable {% endcomment %}
+  <h1 class="h2 mb-3">{{ object.username }}'s public profile</h1>
+  {% with object.authored_croaks as authored_croaks %}
+    <img class="img-fluid rounded d-block w-auto mb-2" src="{% get_avatar_url email=object. size=100 %}" alt="{{object.username}} profile photo">
+    <p class="fw-semibold mb-2">{{ object.username }}{% if object.first_name or object.last_name %} - {% endif %}<span class="fw-lighter">{{ object.first_name }} {{ object.last_name }}</span></p>
+    <p class="mb-2">joined {{ object.date_joined|date }}</p>
+    <p>{{ authored_croaks.count }} Croak{{ authored_croaks.count|pluralize }}</p>
+    {% if request.user.pk == object.pk %}
+      <a href="{% url "profile_edit" user.pk %}" class="btn btn-info">Update Profile</a>
+    {% endif %}
+    <h2 class="mt-3">Croaks</h2>
+    {% for croak in authored_croaks.all %}
+      {% include "partials/_croak.html" %}
+    {% endfor %}
+  {% endwith %}
+{% endblock content %}

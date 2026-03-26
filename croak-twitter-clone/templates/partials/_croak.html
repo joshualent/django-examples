@@ -1,0 +1,49 @@
+{% load helper_tags %}
+<div class="border rounded p-2 mb-3 ">
+  <p>
+    <a href="{{ croak.author.get_absolute_url }}"><img src="{% get_avatar_url email=comment.author.email size=32 %}" alt="{{ comment.author}} profile picture" class="rounded-circle me-2">{{ croak.author.username }}</a> -<span class="ms-2">{{ croak.created|date }}</span>
+    {% if croak.author == user %}
+      <span class="ms-2">
+        <a href="{% url 'croak_edit' croak.pk %}" class="btn btn-outline-primary btn-sm rounded-pill"><i class="bi bi-pencil"></i> Edit</a>
+        <a href="{% url 'croak_delete' croak.pk %}" class="btn btn-outline-danger btn-sm rounded-pill"><i class="bi bi-trash3"></i> Delete</a>
+      </span>
+    {% endif %}
+  </p>
+
+  <p>{{ croak.body }}</p>
+  <p><img class="img-fluid" src="{{ croak.image_url }}"></p>
+  <span class="mt-3 mb-2 d-block">
+    <a
+
+      {% if user.is_authenticated %}href="{{ croak.get_absolute_url }}"{% endif %}
+      class="btn btn-{% if not croak in user.comments.croak %}outline-{% endif %}secondary
+      {% if not user.is_authenticated %}disabled" aria-disabled="true{% endif %}"
+    >{{ croak.comments.count }} comment{{ croak.comments.count|pluralize }}
+    </a>{% include "partials/_like.html" %}
+  </span>
+
+  {% with request.resolver_match.url_name as url_name %}
+  {% with croak.comments.all as comments %}
+  {% if url_name == 'croak_detail' %}
+    {% for comment in comments %}
+    <p>
+      <img src="{% get_avatar_url email=comment.author.email %}" alt="{{ comment.author}} profile picture" class="rounded-circle me-1">
+      {% comment %} if this is the detail page, don't truncate the comment {% endcomment %}
+      {{ comment.author.username }} - {{ comment.body }} 
+    </p>
+    {% endfor %}
+  {% else %}
+    {% for comment in comments|slice:':3' %}
+    <p>
+      <img src="{% get_avatar_url email=comment.author.email %}" alt="{{ comment.author}} profile picture" class="rounded-circle me-1">
+      {{ comment.author.username }} - {{ comment.body|truncatewords:20 }} 
+    </p>
+    {% endfor %}
+    {% if comments|length > 3 %}
+    <p class="text-muted ms-4 my-2"><a href="{{ croak.get_absolute_url }}">View more</a></p>
+    {% endif %}
+
+  {% endif %}
+{% endwith %}
+{% endwith %}
+</div>

@@ -1,0 +1,35 @@
+{% extends '_base.html' %}
+{% block title %}
+  Snippets | {{ block.super }}
+{% endblock title %}
+{% block content %}
+  <div class="text-center mb-3">
+    <h1 class="text-primary">Templar</h1>
+    <h2 class="h4">A Modern Snippets app</h2>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col col-lg-10 col-xl-8">
+      <form action="{% url 'snippet_list' %}" class="mt-4 mb-5">
+        <div class="input-group">
+          <input type="text"
+                 name="search"
+                 value="{{ search }}"
+                 class="form-control"
+                 placeholder="Snippet Title"
+                 aria-label="Snippet Title"
+                 accesskey="k"
+                 aria-describedby="button-search"
+                 hx-get="{% url 'snippet_list' %}"
+                 hx-trigger="input changed delay:500ms, keyup[key=='Enter'], load"
+                 hx-target="#search-results">
+          <button class="btn btn-outline-secondary" type="submit" id="button-search">Search</button>
+        </div>
+        {% if search %}
+          <p class="block m-1 mt-2">
+            <a href="{% url 'snippet_list' %}" class="link-danger">Clear Search</a>
+          </p>
+        {% endif %}
+      </form>
+    </div>
+    <div id="search-results">{% include 'snippets/partials/_snippet_list.html' %}</div>
+  {% endblock content %}

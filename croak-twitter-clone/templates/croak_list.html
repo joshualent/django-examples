@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Feed | {{ block.super }}{% endblock title %}
+
+{% block content %}
+  <div class="col-xl-9 col-lg-10 mx-auto">
+    <h1 class="mb-3 d-inline-block">Feed</h1>
+    {% if not user.is_authenticated %}
+      <p class="d-inline-block h4 ms-3 text-muted">please <a href="{% url "login" %}">login</a> to interact with croaks</p>
+    {% else %}
+    <a class="btn btn-primary float-end d-inline-block mt-2" href="{% url "croak_new" %}"><i class="bi bi-plus me-1"></i>New Croak</a>
+    {% endif %}
+    {% for croak in croak_list %}
+      {% include "partials/_croak.html" %}
+    {% endfor %}
+  </div>
+{% endblock content %}

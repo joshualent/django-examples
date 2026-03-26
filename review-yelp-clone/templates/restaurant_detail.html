@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ restaurant.name }} | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  <h1>{{ restaurant.name }} - {{restaurant.reviews.all|length}} Reviews</h1>
+  <a href="{% url 'review_new' %}" class="btn btn-primary mt-2 mb-3">Write a Review</a>
+  {% for review in restaurant.reviews.all %}
+    <div class="border border-2 p-3 pb-0 mb-3 rounded-2">
+      <p class="ps-2">{{ review.user.username }} ⭐{{ review.rating }}-Star Review</p>
+      <p>{{ review.body|truncatewords:20 }}</p>
+      <p><a href="{% url 'review_detail' review.pk %}" class="btn btn-outline-secondary border-0">Read Full Review</a></p>
+    </div>
+  {% endfor %}
+  </div>
+{% endblock %}

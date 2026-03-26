@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}New Croak | {{ block.super }}{% endblock title %}
+
+{% block content %}
+  <h1>New Croak</h1>
+  <h2>{{ user }}</h2>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy}}
+    <button type="submit" class="btn btn-success ml-2">Post</button>
+  </form>
+{% endblock content %}

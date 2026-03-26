@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+{% block title %}
+    Posts | {{ block.super }}
+{% endblock title %}
+{% block content %}
+    {% for post in post_list %}
+        {% if post.public %}
+            <div>
+                <h2 class="h3 mb-1">
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                </h2>
+                <p class="text-muted">by {{ post.author }} - {{ post.created_at|timesince }} ago</p>
+                <p>{{ post.body }}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock content %}

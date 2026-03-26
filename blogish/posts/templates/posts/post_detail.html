@@ -1,0 +1,42 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    {{ post.title }} | {{ block.super }}
+{% endblock title %}
+{% block content %}
+    <div>
+        <h1 class="inline-block">
+            {{ post.title }}
+            {% if post.author == user %}
+                <span class="inline-block fs-4 ms-1"><a href="{% url "post_edit" post.pk %}">Edit Post</a></span>
+            {% endif %}
+        </h1>
+        <p>{{ post.body }}</p>
+        {% include "posts/partials/_post_like.html" %}
+    </div>
+
+    {% if not user.is_authenticated %}
+    <h2 class="h3 mt-2">Add Comment</h2>
+    <p>Please <a href="{% url "account_login" %}">login</a> to add a comment</p>
+    {% else %}
+    <form method="post">
+        {% csrf_token %}
+        
+        <label for="comment-text" class="form-label h4 mt-3">Add Comment</label>
+        <textarea class="form-control mb-2"
+                  name="text"
+                  id="comment-text"
+                  rows="2"
+                  cols="50"></textarea>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    {% endif %}
+
+    <h2 class="mt-2 h3">Comments</h2>
+    {% for comment in post.comments.all %}
+        {% include "posts/partials/_comment.html" %}
+    {% endfor %}
+    <p class="mt-4">
+        <a href="{% url 'post_list' %}">Back to All Posts</a>
+    </p>
+{% endblock content %}

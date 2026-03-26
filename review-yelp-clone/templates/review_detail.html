@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Restaurant Review | {{ review.restaurant }}
+{% endblock %}
+
+{% block content %}
+  <h1>{{ review.restaurant }} - Review</h1>
+  <p><span class="text-muted">{{review.user.username }} - </span>⭐{{ review.rating }}-Star Review</p>
+  <p class="fs-5">{{ review.body }}</p>
+  <p><a href="{% url 'review_edit' review.pk %}" class="btn btn-success">Edit Review</a>
+    <a href="{% url 'review_delete' review.pk %}" class="btn btn-outline-danger">Delete Review</a>
+  </p>
+  <p><a href="{% url 'restaurant_detail' review.restaurant.pk %}">Back to restaurant</a></p>
+{% endblock %}

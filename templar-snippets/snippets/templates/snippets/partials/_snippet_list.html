@@ -1,0 +1,29 @@
+<div class="row gx-3 gy-3">
+  {% for snippet in snippet_list %}
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ snippet.title }}</h5>
+          {% comment %} <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6> {% endcomment %}
+          <p class="card-text pt-1">
+            {% for tag in snippet.tags.all %}
+              <span class="bg-secondary-subtle rounded-pill py-1 px-2 me-1 border bg-secondary border-primary-subtle">
+                <a href="{{ tag.get_absolute_url }}"
+                   class="link-primary link-offset-1 link-underline-opacity-0 link-underline-opacity-50-hover">{{ tag.name }}</a></span>
+            {% endfor %}
+          </p>
+          <p class="card-text">{{ snippet.author.username }}</p>
+          <a href="{% url 'snippet_detail' snippet.pk %}"
+             class="btn btn-outline-primary border border-2 border-primary-subtle">Open Snippet</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="fs-5 text-center">
+      <span class="text-muted">No results.</span>
+	{% if search %}
+      <a href="{% url 'snippet_list' %}" class="link-offset-1">Clear Search</a>
+	{% endif %}
+    </p>
+  {% endfor %}
+</div>

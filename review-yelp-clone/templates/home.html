@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  All Restaurants | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  <h1>All Restaurants</h1>
+  {% for restaurant in restaurant_list %}
+    <div class="border-bottom pb-2 pt-3">
+      <h2 class="d-inline-block"><a class="link-underline link-underline-opacity-75" href="{{ restaurant.get_absolute_url }}">{{ restaurant.name }} </a></h2><span class="d-inline-block text-muted fs-3 ms-4"> {{restaurant.reviews.all|length}} Review{{restaurant.reviews.all|length|pluralize}}</span>
+      <br>
+      {% for review in restaurant.reviews.all|slice:":3" %}
+        <p>{{ review.user.username }}<span class="fw-bold"> ⭐{{ review.rating }}-Star Review</span> - {{review.body|truncatewords:9}}</p>
+      {% endfor %}
+      {% if restaurant.reviews.all|length > 3 %}
+        <a href="{{ restaurant.get_absolute_url }}">More Reviews...</a>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endblock %}

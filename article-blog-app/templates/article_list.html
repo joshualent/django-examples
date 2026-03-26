@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Articles - {{ block.super }}{% endblock title %}
+{% block content %}
+  <h1>All Articles</h1>
+  {% for article in article_list %}
+    {% include "_article.html" %}
+  {% endfor %}
+{% endblock content %}

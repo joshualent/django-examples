@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Article Detail - {{ block.super }}{% endblock title %}
+
+{% block content %}
+  <div class="article-entry">
+    <h2>{{ article.title }}</h2>
+    <p>
+      by {{ article.author }} | {{ article.created }}
+    </p>
+    <p>{{ article.body }}</p>
+  </div>
+
+  <hr>
+  <h4>Comments</h4>
+  {% for comment in article.comments.all %}
+    <p>{{ comment.author }} &middot; {{ comment.body }}</p>
+  {% empty %}
+    <p class="text-muted">No comments yet.</p>
+  {% endfor %}
+
+  <hr>
+  <h4>Add a comment</h4>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success ml-2">Save</button>
+  </form>
+  <hr>
+  {% if article.author == user %}
+    <p>
+      <a href="{% url 'article_edit' article.pk %}">Edit</a>
+      <a href="{% url 'article_delete' article.pk %}">Delete</a>
+    </p>
+  {% endif %}
+  <p>
+    Back To: <a href="{% url 'article_list' %}">All Artilces</a>
+  </p>
+{% endblock content %}

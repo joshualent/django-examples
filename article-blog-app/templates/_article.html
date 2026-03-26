@@ -1,0 +1,47 @@
+<div class="card">
+  <div class="card-header">
+    <span class="fw-bold">
+      <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+    </span>
+    &middot;
+    <span class="text-muted">{{ article.author }} | {{ article.created }}</span>
+  </div>
+  <div class="card-body">
+    <p>{{ article.body }}</p>
+    <p>
+      {% with user_likes=article.likes.all %}
+        <button
+          data-id="{{ article.id }}"
+          data-action="{% if user in user_likes %}un{% endif %}like"
+          data-like-url="{{ article.get_like_url }}"
+          class="btn btn-{% if not user in user_likes %}outline-{% endif %}primary like-button"
+        >
+          <i class="like-icon bi bi-hand-thumbs-up{% if user in user_likes %}-fill{% endif %}">
+            <span class="like-count">{{ user_likes|length }}</span>
+            Likes
+          </i>
+        </button>
+      {% endwith %}
+    </p>
+    <div class="text-center">
+      {% if article.author == user %}
+        <hr>
+        <a href="{% url 'article_edit' article.pk %}">Edit</a>
+        <a href="{% url 'article_delete' article.pk %}">Delete</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="card-footer text-muted">
+    {% for comment in article.comments.all %}
+      <p>
+        <span class="fw-bold">
+          {{ comment.author }} &middot;
+        </span>
+        {{ comment.body }}
+      </p>
+    {% empty %}
+      <p class="text-muted">No comments yet.</p>
+    {% endfor %}
+  </div>
+</div>
+<br>
